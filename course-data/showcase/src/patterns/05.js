@@ -11,18 +11,17 @@ import mojs from "mo-js";
 import styles from "./index.css";
 import customStyles from "./usage.css";
 
-const initialState = {
-  count: 0,
-  countTotal: 267,
-  isClicked: false,
-};
-
 // update
 /**
  * Custom hook for animation
  */
 
-const useClapAnimation = ({ clapEl, clapCountEl, clapCountTotalEl }) => {
+const useClapAnimation = ({
+  clapEl,
+  clapCountEl,
+  clapCountTotalEl,
+  isClicked,
+}) => {
   const [animationTimeline, setAnimationTimeline] = useState(
     () => new mojs.Timeline()
   );
@@ -86,7 +85,7 @@ const useClapAnimation = ({ clapEl, clapCountEl, clapCountTotalEl }) => {
 
     const countTotalAnimation = new mojs.Html({
       el: clapCountTotalEl,
-      opacity: { 0: 1 },
+      opacity: { [isClicked ? 1 : 0]: 1 },
       delay: (3 * TL_DURATION) / 2,
       duration: TL_DURATION,
       y: { 0: -3 },
@@ -103,7 +102,7 @@ const useClapAnimation = ({ clapEl, clapCountEl, clapCountTotalEl }) => {
     ]);
 
     setAnimationTimeline(newAnimationTimeline);
-  }, [clapEl, clapCountEl, clapCountTotalEl]);
+  }, [clapEl, clapCountEl, clapCountTotalEl, isClicked]);
 
   return animationTimeline;
 };
@@ -115,12 +114,17 @@ const useClapAnimation = ({ clapEl, clapCountEl, clapCountTotalEl }) => {
 const MediumClapContext = createContext();
 const Provider = MediumClapContext.Provider;
 
-const MediumClap = ({ children, onClap, style: useStyles = {}, className }) => {
-  const MAXIMUM_CLAP = 10;
-
+const MediumClap = ({
+  children,
+  onClap,
+  values = null,
+  style: useStyles = {},
+  className,
+}) => {
   const [{ clapRef, clapCountRef, clapCountTotalRef }, setRefState] = useState(
     {}
   );
+
   const setRef = useCallback((node) => {
     setRefState((prevRefState) => ({
       ...prevRefState,
@@ -132,35 +136,22 @@ const MediumClap = ({ children, onClap, style: useStyles = {}, className }) => {
     clapEl: clapRef,
     clapCountEl: clapCountRef,
     clapCountTotalEl: clapCountTotalRef,
+    isClicked: values.isClicked,
   });
-
-  const [clapState, setClapState] = useState(initialState);
-
-  const componentJustMounted = useRef(true);
-  useEffect(() => {
-    !componentJustMounted.current && onClap && onClap(clapState);
-    componentJustMounted.current = false;
-  }, [clapState.count]);
 
   const handleClapClick = () => {
     animationTimeline.replay();
-    setClapState((prevState) => {
-      if (prevState.count == MAXIMUM_CLAP) return prevState;
-
-      return {
-        isClicked: true,
-        count: prevState.count + 1,
-        countTotal: prevState.countTotal + 1,
-      };
-    });
+    onClap();
   };
 
   const memorizedValue = useMemo(
-    () => ({ ...clapState, setRef }),
-    [clapState, setRef]
+    () => ({ ...values, setRef }),
+    [values, setRef]
   );
 
   const classNames = [styles.clap, className].join(" ").trim();
+
+  console.log("values", values);
 
   return (
     <Provider value={memorizedValue}>
@@ -242,19 +233,45 @@ MediumClap.CountTotal = CountTotal;
  */
 
 const Usage = () => {
-  const [count, setCount] = useState(0);
-  const handleClap = (clapState) => setCount(clapState.count);
+  const initialState = {
+    count: 0,
+    countTotal: 10,
+    isClicked: false,
+  };
+  const MAXIMUM_CLAP = 10;
+  const [clapState, setClapState] = useState(initialState);
+  const handleClap = () => {
+    setClapState((prevState) => {
+      if (prevState.count == MAXIMUM_CLAP) return prevState;
+
+      return {
+        isClicked: true,
+        count: prevState.count + 1,
+        countTotal: prevState.countTotal + 1,
+      };
+    });
+  };
 
   return (
     <div style={{ width: "100%" }}>
-      <MediumClap onClap={handleClap} className={customStyles.clap}>
+      <MediumClap
+        values={clapState}
+        onClap={handleClap}
+        className={customStyles.clap}
+      >
         <MediumClap.Icon className={customStyles.icon} />
         <MediumClap.Count className={customStyles.count} />
         <MediumClap.CountTotal className={customStyles.total} />
       </MediumClap>
-      {!!count && (
-        <div className={styles.info}>{`You have clapped ${count} times`}</div>
-      )}
+      <MediumClap
+        values={clapState}
+        onClap={handleClap}
+        className={customStyles.clap}
+      >
+        <MediumClap.Icon className={customStyles.icon} />
+        <MediumClap.Count className={customStyles.count} />
+        <MediumClap.CountTotal className={customStyles.total} />
+      </MediumClap>
     </div>
   );
 };
