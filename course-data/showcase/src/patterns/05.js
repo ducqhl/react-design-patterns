@@ -151,8 +151,6 @@ const MediumClap = ({
 
   const classNames = [styles.clap, className].join(" ").trim();
 
-  console.log("values", values);
-
   return (
     <Provider value={memorizedValue}>
       <button
@@ -263,14 +261,10 @@ const Usage = () => {
         <MediumClap.Count className={customStyles.count} />
         <MediumClap.CountTotal className={customStyles.total} />
       </MediumClap>
-      <MediumClap
-        values={clapState}
-        onClap={handleClap}
-        className={customStyles.clap}
-      >
-        <MediumClap.Icon className={customStyles.icon} />
-        <MediumClap.Count className={customStyles.count} />
-        <MediumClap.CountTotal className={customStyles.total} />
+      <MediumClap values={clapState} onClap={handleClap}>
+        <MediumClap.Icon />
+        <MediumClap.Count />
+        <MediumClap.CountTotal />
       </MediumClap>
     </div>
   );

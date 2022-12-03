@@ -42,15 +42,14 @@
     right: 10px;
 }
 .resetBtn {
-    border-bottom: 1px solid #bdc3c7;
-    color: '#27ae60';
+    cursor: pointer;
     margin-top: 30px;
     padding: 10px 20px;
     border-radius: 20px;
-    outline: 0;
     display: block;
     width: 100%;
 }
 .resetMsg {
     color: black;
+    width: 100%;
 }
