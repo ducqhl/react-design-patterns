@@ -6,10 +6,9 @@ Let's see if I can make it before 2022!
 ### About the course
 
 - Repository: https://github.com/chesterheng/advanced-react-patterns#section-1-introduction
-### Progress
 
-- [x] Section 1: Introduction
-    - Why Advanced React Patterns?
-- [ ] Section 2
-- [ ] Section 3
+### mindmap
+
+<img width="2637" alt="React Patterns" src="https://user-images.githubusercontent.com/16135027/205483392-bc91a1a6-50a2-42b1-94e7-056c39ccbba3.png">
+
 
