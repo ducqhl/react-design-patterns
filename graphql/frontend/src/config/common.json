@@ -1,0 +1,10 @@
+{
+    "server": {
+        "port": 3000
+    },
+    "security": {
+        "secretKey":"H0llaBonj0j3r",
+        "expiresIn":"7d"
+    }
+
+}
