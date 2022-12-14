@@ -1,3 +1,4 @@
+// Dependencies
 import { encrypt } from '@contentpi/lib'
 
 // Interfaces
