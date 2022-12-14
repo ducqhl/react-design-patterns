@@ -52,18 +52,18 @@ export default {
         privilege: '',
         active: false
       }
-    },
-    Mutation: {
-      createUser: (
-        _: any,
-        { input }: { input: ICreateUserInput },
-        { models }: { models: IModels }
-      ): IUser => models.User.create({ ...input }),
-      login: (
-        _: any,
-        { input }: { input: ILoginInput },
-        { models }: { models: IModels }
-      ): Promise<IAuthPayload> => doLogin(input.email, input.password, models)
     }
+  },
+  Mutation: {
+    createUser: (
+      _: any,
+      { input }: { input: ICreateUserInput },
+      { models }: { models: IModels }
+    ): IUser => models.User.create({ ...input }),
+    login: (
+      _: any,
+      { input }: { input: ILoginInput },
+      { models }: { models: IModels }
+    ): Promise<IAuthPayload> => doLogin(input.email, input.password, models)
   }
 }

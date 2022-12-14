@@ -11,7 +11,7 @@ import { IUser } from '../types'
 const { secretKey } = $security
 
 export function jwtVerify(accessToken: string, cb: any): void {
-  // Verifying our JWT token using the access token and the secret key
+  // Verifying our JWT token using the accessToken and the secretKey
   jwt.verify(
     accessToken,
     secretKey,
@@ -21,6 +21,7 @@ export function jwtVerify(accessToken: string, cb: any): void {
       // If we get an error or the user is not found we return false
       if (error || !user) return cb(false)
 
+      // The user data is on base64 and getBase64 will retrieve the information as JSON object
       const userData = getBase64(user)
 
       return cb(userData)

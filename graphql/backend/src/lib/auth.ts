@@ -22,6 +22,7 @@ export const getUserBy = async (
 
   return user
 }
+
 export const doLogin = async (
   email: string,
   password: string,
