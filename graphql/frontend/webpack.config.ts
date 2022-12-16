@@ -2,7 +2,6 @@
 import path from 'path'
 import webpack, { Configuration } from 'webpack'
 import HtmlWebPackPlugin from 'html-webpack-plugin'
-import Dotenv from 'dotenv-webpack'
 
 // Environment
 const isProduction = process.env.NODE_ENV === 'production'
@@ -21,8 +20,8 @@ const webpackConfig: Configuration = {
     extensions: ['.ts', '.tsx', '.js', '.json'],
     fallback: {
       buffer: require.resolve('buffer'),
-      crypto: require.resolve('crypto-browserify'),
-      stream: require.resolve('stream-browserify')
+      crypto: require.resolve("crypto-browserify"),
+      stream: require.resolve("stream-browserify")
     }
   },
   module: {
@@ -57,9 +56,6 @@ const webpackConfig: Configuration = {
       template: './src/index.html',
       filename: './index.html',
       publicPath: !isProduction ? 'http://localhost:8080/' : '' // For dev we will read the bundle from localhost:8080 (webpack-dev-server)
-    }),
-    new Dotenv({
-      path: './.env'
     })
   ]
 }

@@ -3,9 +3,7 @@
     "port": 3000
   },
   "security": {
-    "secretKey": "H0llaBonj0j3r",
+    "secretKey": "C0nt3ntP1",
     "expiresIn": "7d"
-  },
-  "baseUrl": "http://localhost:3000",
-  "apiUrl": "http://localhost:5001/graphql"
+  }
 }

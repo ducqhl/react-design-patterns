@@ -1,20 +1,23 @@
+// Dependencies
+import { FC, ReactElement } from 'react'
 import { isBrowser } from '@contentpi/lib'
-import { FC } from 'react'
-import Login from '../components/user/Login'
+
+// Contexts
 import UserProvider from '../contexts/user'
 
-interface LoginPageProps {
+// Components
+import LoginLayout from '../components/users/LoginLayout'
+
+interface IProps {
   currentUrl: string
 }
 
-const LoginPage: FC<LoginPageProps> = ({
-  currentUrl = isBrowser()
-    ? window.location.search.replace('?redirectTo=', '')
-    : ''
-}) => (
+const Page: FC<IProps> = ({
+  currentUrl = isBrowser() ? window.location.search.replace('?redirectTo=', '') : ''
+}): ReactElement => (
   <UserProvider page="login">
-    <Login currentUrl={currentUrl} />
+    <LoginLayout currentUrl={currentUrl} />
   </UserProvider>
 )
 
-export default LoginPage
+export default Page

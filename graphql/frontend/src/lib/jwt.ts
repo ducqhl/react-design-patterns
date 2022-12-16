@@ -1,3 +1,4 @@
+// Dependencies
 import jwt from 'jsonwebtoken'
 import { getBase64 } from '@contentpi/lib'
 
@@ -11,8 +12,8 @@ const {
 
 export function jwtVerify(accessToken: any, cb: any): void {
   // Validating our accessToken
-  jwt.verify(accessToken, secretKey, (error: any, accessToken: any = {}) => {
-    const { data: user } = accessToken
+  jwt.verify(accessToken, secretKey, (error: any, accessTokenData: any = {}) => {
+    const { data: user } = accessTokenData
 
     // If we got an error or the user is not connected we return false
     if (error || !user) {
@@ -21,15 +22,14 @@ export function jwtVerify(accessToken: any, cb: any): void {
 
     // Getting the user data
     const userData = getBase64(user)
+
     return cb(userData)
   })
 }
 
 export async function getUserData(accessToken: any): Promise<any> {
   // This is an async function to retrieve the user data from the jwtVerify function
-  const UserPromise = new Promise(resolve =>
-    jwtVerify(accessToken, (user: any) => resolve(user))
-  )
+  const UserPromise = new Promise(resolve => jwtVerify(accessToken, (user: any) => resolve(user)))
 
   const user = await UserPromise
 

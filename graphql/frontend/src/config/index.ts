@@ -1,8 +1,9 @@
 // Configuration
 import common from './common.json'
-import development from './development.json'
+import local from './local.json'
 import production from './production.json'
 
+// Interface
 interface IConfig {
   baseUrl: string
   apiUrl: string
@@ -17,16 +18,21 @@ interface IConfig {
 
 const { NODE_ENV = 'development' } = process.env
 
-// Environments validations
-export const isDevelopment = () => NODE_ENV === 'development'
-export const isProduction = () => NODE_ENV === 'production'
+// development => local
+let environment = 'local'
 
-if (!isDevelopment() && !isProduction()) {
-  throw new Error('Environment was not valid')
+if (NODE_ENV !== 'development') {
+  environment = NODE_ENV
 }
+
+// Configurations by environment
 const config: IConfig = {
   ...common,
-  ...(isDevelopment() ? development : production)
+  ...(environment === 'local' ? local : production)
 }
+
+// Environments validations
+export const isLocal = () => environment === 'local'
+export const isProduction = () => environment === 'production'
 
 export default config

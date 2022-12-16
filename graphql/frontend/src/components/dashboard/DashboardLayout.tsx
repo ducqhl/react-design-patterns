@@ -1,23 +1,22 @@
 // Dependencies
-import { ComponentType, ReactElement, useContext } from 'react'
+import { FC, ReactElement, useContext } from 'react'
 
 // Contexts
 import { UserContext } from '../../contexts/user'
-import { IUserLogin } from '../../types'
 
-export interface IDashboardProps {
-  connectedUser: IUserLogin
-}
+// Components
+import Dashboard from './Dashboard'
 
-const withLayout =
-  (Dashboard: ComponentType<IDashboardProps>) => (): ReactElement => {
-    const { connectedUser } = useContext(UserContext)
+const Layout: FC = (): ReactElement => {
+  const { connectedUser } = useContext(UserContext)
 
-    if (connectedUser) {
-      return <Dashboard connectedUser={connectedUser} />
-    }
-
-    return <></>
+  if (connectedUser) {
+    return (
+      <Dashboard connectedUser={connectedUser} />
+    )
   }
 
-export default withLayout
+  return <div />
+}
+
+export default Layout

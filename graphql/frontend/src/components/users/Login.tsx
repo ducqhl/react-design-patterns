@@ -3,13 +3,17 @@ import { FC, ReactElement, useState, ChangeEvent } from 'react'
 import { redirectTo } from '@contentpi/lib'
 
 // Interfaces
-import { User } from '../../types'
+import { IUser } from '../../types'
 
 // Styles
 import { StyledLogin } from './Login.styled'
-import withLayout, { ILoginProps } from './LoginLayout'
 
-const Login: FC<ILoginProps> = ({ login, currentUrl }): ReactElement => {
+interface IProps {
+  login(input: any): any
+  currentUrl: string
+}
+
+const Login: FC<IProps> = ({ login, currentUrl }): ReactElement => {
   // States
   const [values, setValues] = useState({
     email: '',
@@ -32,8 +36,7 @@ const Login: FC<ILoginProps> = ({ login, currentUrl }): ReactElement => {
     }
   }
 
-  const handleSubmit = async (user: User): Promise<void> => {
-    debugger
+  const handleSubmit = async (user: IUser): Promise<void> => {
     // Here we execute the login mutation
     const response = await login(user)
 
@@ -78,10 +81,7 @@ const Login: FC<ILoginProps> = ({ login, currentUrl }): ReactElement => {
             </p>
 
             <div className="actions">
-              <button
-                name="login"
-                onClick={(): Promise<void> => handleSubmit(values)}
-              >
+              <button name="login" onClick={(): Promise<void> => handleSubmit(values)}>
                 Login
               </button>
             </div>
@@ -92,4 +92,4 @@ const Login: FC<ILoginProps> = ({ login, currentUrl }): ReactElement => {
   )
 }
 
-export default withLayout(Login)
+export default Login

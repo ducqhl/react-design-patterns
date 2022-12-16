@@ -9,12 +9,11 @@ import LOGIN_MUTATION from '../graphql/user/login.mutation'
 
 // Queries
 import GET_USER_DATA_QUERY from '../graphql/user/getUserData.query'
-import { User } from '../types/types'
 
 // Interfaces
 interface IUserContext {
   login(input: any): any
-  connectedUser?: User
+  connectedUser: any
 }
 
 interface IProps {
@@ -22,15 +21,15 @@ interface IProps {
   children: ReactElement
 }
 
-// Context
+// Creating context
 export const UserContext = createContext<IUserContext>({
-  login: () => null
+  login: () => null,
+  connectedUser: null
 })
 
-// Provider
 const UserProvider: FC<IProps> = ({ page = '', children }): ReactElement => {
-  const [cookies, setCookies] = useCookies()
-  const [connectedUser, setConnectedUser] = useState()
+  const [cookies, setCookie] = useCookies()
+  const [connectedUser, setConnectedUser] = useState(null)
 
   // Mutations
   const [loginMutation] = useMutation(LOGIN_MUTATION)
@@ -44,23 +43,18 @@ const UserProvider: FC<IProps> = ({ page = '', children }): ReactElement => {
 
   // Effects
   useEffect(() => {
-    debugger
-    if (!dataUser) return
-
-    if (!dataUser.getUserData.id && page !== 'login') {
-      // If the user session is invalid and is on a different page than login we redirect them to login
-      redirectTo('/login?redirectTo=/dashboard', false)
-    } else {
-      // If we have the user data available we save it in our connectedUser state
-      setConnectedUser(dataUser.getUserData)
+    if (dataUser) {
+      if (!dataUser.getUserData.id && page !== 'login') {
+        // If the user session is invalid and is on a different page than login we redirect them to login
+        redirectTo('/login?redirectTo=/dashboard', false)
+      } else {
+        // If we have the user data available we save it in our connectedUser state
+        setConnectedUser(dataUser.getUserData)
+      }
     }
   }, [dataUser, page])
 
-  const login = async (input: {
-    email: string
-    password: string
-  }): Promise<any> => {
-    debugger
+  async function login(input: { email: string; password: string }): Promise<any> {
     try {
       // Executing our loginMutation passing the email and password
       const { data: dataLogin } = await loginMutation({
@@ -72,7 +66,7 @@ const UserProvider: FC<IProps> = ({ page = '', children }): ReactElement => {
 
       if (dataLogin) {
         // If the login was success, we save the token in our "at" cookie
-        setCookies('at', dataLogin.login.token, { path: '/' })
+        setCookie('at', dataLogin.login.token, { path: '/' })
 
         return dataLogin.login.token
       }
@@ -82,6 +76,7 @@ const UserProvider: FC<IProps> = ({ page = '', children }): ReactElement => {
     }
   }
 
+  // Exporting our context
   const context = {
     login,
     connectedUser

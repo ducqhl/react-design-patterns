@@ -1,15 +1,11 @@
-import { FC } from 'react'
-
-const HomePage: FC = () => (
+const Page = () => (
   <div className="home">
     <h1>Home</h1>
 
     <ul>
-      <li>
-        <a href="/dashboard">Go to Dashboard</a>
-      </li>
+      <li><a href="/dashboard">Go to Dashboard</a></li>
     </ul>
   </div>
 )
 
-export default HomePage
+export default Page

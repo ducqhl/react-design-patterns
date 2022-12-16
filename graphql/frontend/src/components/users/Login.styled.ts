@@ -11,6 +11,7 @@ export const StyledLogin = styled.div`
     overflow: hidden;
     position: relative;
     width: 300px;
+
     .alert {
       border-radius: 0.25rem;
       border: 1px solid transparent;
