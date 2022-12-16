@@ -3,7 +3,7 @@ import { FC, ReactElement, useState, ChangeEvent } from 'react'
 import { redirectTo } from '@contentpi/lib'
 
 // Interfaces
-import { IUserLogin } from '../../types'
+import { User } from '../../types'
 
 // Styles
 import { StyledLogin } from './Login.styled'
@@ -32,15 +32,18 @@ const Login: FC<ILoginProps> = ({ login, currentUrl }): ReactElement => {
     }
   }
 
-  const handleSubmit = async (user: IUserLogin): Promise<void> => {
-    try {
-      // Here we execute the login mutation
-      await login(user)
-      redirectTo(currentUrl || '/')
-    } catch (error: any) {
+  const handleSubmit = async (user: User): Promise<void> => {
+    debugger
+    // Here we execute the login mutation
+    const response = await login(user)
+
+    if (response.error) {
       // If the login is invalid...
       setInvalidLogin(true)
-      setErrorMessage(error?.message)
+      setErrorMessage(response.message)
+    } else {
+      // If the login is correct...
+      redirectTo(currentUrl || '/')
     }
   }
 

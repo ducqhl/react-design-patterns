@@ -9,12 +9,12 @@ import LOGIN_MUTATION from '../graphql/user/login.mutation'
 
 // Queries
 import GET_USER_DATA_QUERY from '../graphql/user/getUserData.query'
-import IUser from '../types/types'
+import { User } from '../types/types'
 
 // Interfaces
 interface IUserContext {
   login(input: any): any
-  connectedUser?: IUser
+  connectedUser?: User
 }
 
 interface IProps {
@@ -44,6 +44,7 @@ const UserProvider: FC<IProps> = ({ page = '', children }): ReactElement => {
 
   // Effects
   useEffect(() => {
+    debugger
     if (!dataUser) return
 
     if (!dataUser.getUserData.id && page !== 'login') {
@@ -59,6 +60,7 @@ const UserProvider: FC<IProps> = ({ page = '', children }): ReactElement => {
     email: string
     password: string
   }): Promise<any> => {
+    debugger
     try {
       // Executing our loginMutation passing the email and password
       const { data: dataLogin } = await loginMutation({

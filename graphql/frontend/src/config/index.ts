@@ -17,16 +17,16 @@ interface IConfig {
 
 const { NODE_ENV = 'development' } = process.env
 
-if (NODE_ENV !== 'production' && NODE_ENV !== 'development') {
+// Environments validations
+export const isDevelopment = () => NODE_ENV === 'development'
+export const isProduction = () => NODE_ENV === 'production'
+
+if (!isDevelopment() && !isProduction()) {
   throw new Error('Environment was not valid')
 }
 const config: IConfig = {
   ...common,
-  ...(NODE_ENV === 'development' ? development : production)
+  ...(isDevelopment() ? development : production)
 }
-
-// Environments validations
-export const isDevelopment = () => NODE_ENV === 'development'
-export const isProduction = () => NODE_ENV === 'production'
 
 export default config

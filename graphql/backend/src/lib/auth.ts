@@ -31,7 +31,6 @@ export const doLogin = async (
   // Finding a user by email
   const user = await getUserBy({ email }, models)
 
-  // If the user does not exists we return Invalid Login
   if (!user) {
     throw new AuthenticationError('Invalid Login')
   }
