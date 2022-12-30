@@ -1,0 +1,1 @@
+export const  REACT_APP_POKEAPI_URL  = process.env.REACT_APP_POKEAPI_URL || 'https://pokeapi.co/api/v2/pokemon'
